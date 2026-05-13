@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TàiLiệuHọc — Mua bán & trao đổi tài liệu học tập</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#1E4E8C;--brand2:#0EA5E9;--accent:#F59E0B;
+  --bg:#F0F4FA;--card:#fff;--text:#111827;--sub:#6B7280;
+  --border:#E5E7EB;--tag-bg:#EFF6FF;--tag-text:#1E4E8C;
+  --green:#059669;--red:#DC2626;--radius:12px;
+}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.wrap{max-width:680px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,0.08)}
+
+/* HEADER */
+.header{background:var(--brand);padding:16px 20px 0;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.06)}
+.header::after{content:'';position:absolute;bottom:-30px;left:30%;width:160px;height:160px;border-radius:50%;background:rgba(14,165,233,0.15)}
+.logo{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.3px;position:relative;text-decoration:none}
+.logo span{color:var(--accent)}
+.tagline{font-size:11px;color:rgba(255,255,255,0.65);margin-top:2px;letter-spacing:0.3px;position:relative}
+.nav{display:flex;gap:4px;margin-top:14px;position:relative}
+.nav-item{font-size:12px;padding:7px 14px;border-radius:8px 8px 0 0;cursor:pointer;color:rgba(255,255,255,0.7);font-family:'Sora',sans-serif;font-weight:500;transition:all 0.2s;border:none;background:transparent}
+.nav-item.active{background:var(--bg);color:var(--brand);font-weight:600}
+.nav-item:hover:not(.active){background:rgba(255,255,255,0.12);color:#fff}
+
+/* STATS */
+.stats{display:flex;background:var(--brand);padding:0 16px}
+.stat{flex:1;text-align:center;padding:10px 8px;border-right:1px solid rgba(255,255,255,0.1)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:#fff}
+.stat-label{font-size:10px;color:rgba(255,255,255,0.6);margin-top:1px}
+
+/* SEARCH */
+.search-wrap{padding:0 16px;background:var(--bg)}
+.search-bar{background:#fff;border-radius:0 8px 8px 8px;padding:14px 16px;display:flex;gap:10px;align-items:center;box-shadow:0 2px 12px rgba(30,78,140,0.1)}
+.search-bar input{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:'IBM Plex Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.search-bar input:focus{border-color:var(--brand2)}
+.search-bar select{border:1.5px solid var(--border);border-radius:8px;padding:9px 10px;font-size:12px;font-family:'IBM Plex Sans',sans-serif;outline:none;color:var(--sub);background:#fff}
+.btn-search{background:var(--brand);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;transition:background 0.2s}
+.btn-search:hover{background:#163d72}
+
+/* MAIN */
+.main{padding:16px;flex:1}
+
+/* FILTERS */
+.filter-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px}
+.filter-row::-webkit-scrollbar{height:3px}
+.filter-row::-webkit-scrollbar-track{background:transparent}
+.filter-row::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.chip{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--sub);font-family:'Sora',sans-serif;transition:all 0.2s}
+.chip.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.chip:hover:not(.active){border-color:var(--brand2);color:var(--brand)}
+
+/* SECTION TITLE */
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.section-title h3{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:var(--text)}
+.see-all{font-size:12px;color:var(--brand2);cursor:pointer;font-weight:500}
+
+/* DOC CARDS */
+.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.doc-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:all 0.2s;position:relative}
+.doc-card:hover{border-color:var(--brand2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(30,78,140,0.12)}
+.doc-thumb{height:84px;display:flex;align-items:center;justify-content:center;font-size:34px;position:relative}
+.doc-thumb.pdf{background:#FEF2F2}
+.doc-thumb.ppt{background:#FFF7ED}
+.doc-thumb.doc{background:#EFF6FF}
+.doc-thumb.zip{background:#F0FDF4}
+.doc-badge{position:absolute;top:7px;right:7px;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:700;font-family:'Sora',sans-serif}
+.badge-free{background:#D1FAE5;color:#065F46}
+.badge-sale{background:#FEE2E2;color:#991B1B}
+.badge-hot{background:#FEF3C7;color:#92400E}
+.badge-new{background:#EDE9FE;color:#5B21B6}
+.doc-body{padding:10px 12px}
+.doc-title{font-size:12px;font-weight:600;font-family:'Sora',sans-serif;color:var(--text);line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:34px}
+.doc-meta{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.doc-price{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;color:var(--brand)}
+.doc-price.free{color:var(--green)}
+.doc-rating{font-size:11px;color:var(--sub);display:flex;align-items:center;gap:3px}
+.doc-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.doc-tag{padding:2px 7px;background:var(--tag-bg);color:var(--tag-text);border-radius:6px;font-size:10px;font-weight:500}
+.doc-dl{font-size:10px;color:var(--sub);margin-top:4px}
+
+/* FEATURED */
+.featured{background:linear-gradient(135deg,#1E4E8C 0%,#1a7abf 100%);border-radius:var(--radius);padding:18px;margin-bottom:20px;position:relative;overflow:hidden}
+.featured::after{content:'📚';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:52px;opacity:0.15}
+.featured-label{font-size:10px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.featured-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.4;max-width:80%}
+.featured-desc{font-size:12px;color:rgba(255,255,255,0.8);margin-bottom:14px;line-height:1.5;max-width:80%}
+.btn-white{display:inline-block;background:#fff;color:var(--brand);padding:8px 18px;border-radius:8px;font-size:12px;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;border:none;transition:all 0.2s}
+.btn-white:hover{background:#F0F4FA}
+.feat-info{display:inline-block;margin-left:12px;color:rgba(255,255,255,0.8);font-size:12px;font-weight:500}
+
+/* CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.cat-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 6px;text-align:center;cursor:pointer;transition:all 0.2s}
+.cat-item:hover{border-color:var(--brand2);background:#F0F9FF;transform:translateY(-1px)}
+.cat-icon{font-size:22px;margin-bottom:5px}
+.cat-name{font-size:11px;font-weight:600;font-family:'Sora',sans-serif;color:var(--text)}
+.cat-count{font-size:10px;color:var(--sub);margin-top:2px}
+
+/* HOW IT WORKS */
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.how-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center}
+.how-icon{font-size:24px;margin-bottom:7px}
+.how-title{font-size:12px;font-weight:700;font-family:'Sora',sans-serif;color:var(--text);margin-bottom:4px}
+.how-desc{font-size:10px;color:var(--sub);line-height:1.5}
+
+/* UPLOAD CTA */
+.upload-box{background:var(--card);border:2px dashed #B3C9E8;border-radius:var(--radius);padding:22px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:20px}
+.upload-box:hover{border-color:var(--brand2);background:#F0F9FF}
+.upload-icon{font-size:30px;margin-bottom:10px}
+.upload-title{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px}
+.upload-sub{font-size:12px;color:var(--sub);line-height:1.5}
+.upload-actions{display:flex;gap:10px;margin-top:14px;justify-content:center}
+.btn-outline{padding:9px 18px;border-radius:8px;font-size:12px;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;border:1.5px solid var(--brand);color:var(--brand);background:transparent;transition:all 0.2s}
+.btn-outline:hover{background:var(--tag-bg)}
+.btn-primary{padding:9px 18px;border-radius:8px;font-size:12px;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;border:none;background:var(--brand);color:#fff;transition:all 0.2s}
+.btn-primary:hover{background:#163d72}
+
+/* BOTTOM NAV */
+.bottom-nav{background:var(--card);border-top:1px solid var(--border);display:flex;position:sticky;bottom:0;z-index:50}
+.bn-item{flex:1;padding:10px 4px;text-align:center;cursor:pointer;transition:all 0.2s;color:var(--sub);font-size:10px;font-weight:500;font-family:'Sora',sans-serif;border:none;background:transparent}
+.bn-item.active{color:var(--brand)}
+.bn-icon{font-size:22px;margin-bottom:2px;display:block}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:22px;width:100%;max-width:380px;max-height:90vh;overflow-y:auto}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-title{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--text)}
+.btn-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--sub);line-height:1;padding:0 4px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:12px;font-weight:600;color:var(--sub);margin-bottom:5px;display:block;font-family:'Sora',sans-serif}
+.form-input{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 13px;font-size:13px;font-family:'IBM Plex Sans',sans-serif;outline:none;transition:border-color 0.2s;color:var(--text)}
+.form-input:focus{border-color:var(--brand2)}
+.divider{text-align:center;color:var(--sub);font-size:12px;margin:14px 0;position:relative}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
+.divider::before{left:0}.divider::after{right:0}
+.social-btn{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px;font-size:13px;font-weight:500;font-family:'Sora',sans-serif;cursor:pointer;background:#fff;color:var(--text);margin-bottom:8px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.social-btn:hover{background:var(--bg);border-color:#ccc}
+.toggle-link{text-align:center;font-size:12px;color:var(--sub);margin-top:14px}
+.toggle-link a{color:var(--brand2);cursor:pointer;font-weight:600;text-decoration:none}
+.success-box{background:#D1FAE5;border-radius:12px;padding:20px;text-align:center}
+.success-icon{font-size:36px;margin-bottom:10px}
+.success-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:#065F46;margin-bottom:6px}
+.success-sub{font-size:12px;color:#047857;line-height:1.6}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;margin-bottom:10px}
+.header-btns{display:flex;gap:8px;position:relative}
+
+@media(max-width:480px){
+  .doc-grid{grid-template-columns:1fr 1fr}
+  .cat-grid{grid-template-columns:repeat(4,1fr)}
+  .how-grid{grid-template-columns:repeat(3,1fr)}
+  .search-bar{flex-wrap:wrap}
+  .search-bar select{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <a class="logo" href="#">Tài<span>Liệu</span>Học</a>
+        <div class="tagline">Nền tảng mua bán &amp; trao đổi tài liệu học tập</div>
+      </div>
+      <div class="header-btns">
+        <button class="btn-white" style="padding:7px 13px;font-size:11px" onclick="openModal('login')">Đăng nhập</button>
+        <button onclick="openModal('register')" style="padding:7px 13px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer">Đăng ký</button>
+      </div>
+    </div>
+    <div class="stats" style="margin:0 -20px">
+      <div class="stat"><div class="stat-num">12.840</div><div class="stat-label">Tài liệu</div></div>
+      <div class="stat"><div class="stat-num">3.210</div><div class="stat-label">Thành viên</div></div>
+      <div class="stat"><div class="stat-num">8.500+</div><div class="stat-label">Lượt tải</div></div>
+      <div class="stat"><div class="stat-num">1.200</div><div class="stat-label">Miễn phí</div></div>
+    </div>
+    <div class="nav">
+      <button class="nav-item active" onclick="switchTab(this)">Trang chủ</button>
+      <button class="nav-item" onclick="switchTab(this)">Chợ tài liệu</button>
+      <button class="nav-item" onclick="switchTab(this)">Trao đổi</button>
+      <button class="nav-item" onclick="openModal('register')">Đăng bán</button>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Tìm giáo trình, đề thi, bài giảng..."/>
+      <select>
+        <option>Tất cả</option>
+        <option>Đại học</option>
+        <option>THPT</option>
+        <option>Chứng chỉ</option>
+        <option>Khác</option>
+      </select>
+      <button class="btn-search"><i class="ti ti-search"></i> Tìm</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- CATEGORIES -->
+    <div class="section-title">
+      <h3>📚 Danh mục tài liệu</h3>
+      <span class="see-all">Xem tất cả →</span>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-item"><div class="cat-icon">🎓</div><div class="cat-name">Đại học</div><div class="cat-count">4.200 TL</div></div>
+      <div class="cat-item"><div class="cat-icon">📝</div><div class="cat-name">Đề thi</div><div class="cat-count">3.100 TL</div></div>
+      <div class="cat-item"><div class="cat-icon">💻</div><div class="cat-name">CNTT</div><div class="cat-count">1.800 TL</div></div>
+      <div class="cat-item"><div class="cat-icon">🏥</div><div class="cat-name">Y dược</div><div class="cat-count">980 TL</div></div>
+      <div class="cat-item"><div class="cat-icon">⚖️</div><div class="cat-name">Luật</div><div class="cat-count">760 TL</div></div>
+      <div class="cat-item"><div class="cat-icon">💰</div><div class="cat-name">Kinh tế</div><div class="cat-count">1.400 TL</div></div>
+      <div class="cat-item"><div class="cat-icon">🔬</div><div class="cat-name">Khoa học</div><div class="cat-count">620 TL</div></div>
+      <div class="cat-item"><div class="cat-icon">🌏</div><div class="cat-name">Ngoại ngữ</div><div class="cat-count">890 TL</div></div>
+    </div>
+
+    <!-- FEATURED -->
+    <div class="featured">
+      <div class="featured-label">⭐ Nổi bật tuần này</div>
+      <div class="featured-title">Bộ đề thi thử THPTQG 2024 — Toán, Lý, Hóa (40 đề)</div>
+      <div class="featured-desc">Tổng hợp 40 đề từ các trường chuyên toàn quốc. Có đáp án và hướng dẫn giải chi tiết.</div>
+      <button class="btn-white" onclick="openModal('buy')">Tải ngay — 25.000đ</button>
+      <span class="feat-info">🔥 Đã bán 328 lần</span>
+    </div>
+
+    <!-- NEW DOCS -->
+    <div class="section-title">
+      <h3>🆕 Tài liệu mới nhất</h3>
+      <span class="see-all">Xem tất cả →</span>
+    </div>
+    <div class="filter-row">
+      <div class="chip active">Tất cả</div>
+      <div class="chip">Miễn phí</div>
+      <div class="chip">Dưới 20k</div>
+      <div class="chip">Đại học</div>
+      <div class="chip">Đề thi</div>
+      <div class="chip">Chứng chỉ</div>
+      <div class="chip">THPT</div>
+    </div>
+    <div class="doc-grid">
+      <div class="doc-card" onclick="openModal('buy')">
+        <div class="doc-thumb pdf">📄<div class="doc-badge badge-hot">HOT</div></div>
+        <div class="doc-body">
+          <div class="doc-title">Giáo trình Luật Dân sự — ĐH Luật HN (2024)</div>
+          <div class="doc-tags"><span class="doc-tag">PDF</span><span class="doc-tag">Luật</span></div>
+          <div class="doc-dl">↓ 1.240 lượt tải</div>
+          <div class="doc-meta"><span class="doc-price">15.000đ</span><span class="doc-rating">⭐ 4.8</span></div>
+        </div>
+      </div>
+      <div class="doc-card" onclick="openModal('buy')">
+        <div class="doc-thumb ppt">📊<div class="doc-badge badge-free">FREE</div></div>
+        <div class="doc-body">
+          <div class="doc-title">Slide Marketing căn bản — NEU</div>
+          <div class="doc-tags"><span class="doc-tag">PPT</span><span class="doc-tag">Kinh tế</span></div>
+          <div class="doc-dl">↓ 892 lượt tải</div>
+          <div class="doc-meta"><span class="doc-price free">Miễn phí</span><span class="doc-rating">⭐ 4.6</span></div>
+        </div>
+      </div>
+      <div class="doc-card" onclick="openModal('buy')">
+        <div class="doc-thumb doc">📘<div class="doc-badge badge-sale">-30%</div></div>
+        <div class="doc-body">
+          <div class="doc-title">Bộ từ vựng IELTS 7.0+ (3000 từ có ví dụ)</div>
+          <div class="doc-tags"><span class="doc-tag">DOCX</span><span class="doc-tag">Tiếng Anh</span></div>
+          <div class="doc-dl">↓ 2.100 lượt tải</div>
+          <div class="doc-meta"><span class="doc-price">35.000đ</span><span class="doc-rating">⭐ 4.9</span></div>
+        </div>
+      </div>
+      <div class="doc-card" onclick="openModal('buy')">
+        <div class="doc-thumb zip">📦<div class="doc-badge badge-new">MỚI</div></div>
+        <div class="doc-body">
+          <div class="doc-title">Bài tập lập trình Python có lời giải (100 bài)</div>
+          <div class="doc-tags"><span class="doc-tag">ZIP</span><span class="doc-tag">CNTT</span></div>
+          <div class="doc-dl">↓ 540 lượt tải</div>
+          <div class="doc-meta"><span class="doc-price">20.000đ</span><span class="doc-rating">⭐ 4.7</span></div>
+        </div>
+      </div>
+      <div class="doc-card" onclick="openModal('buy')">
+        <div class="doc-thumb pdf">📗<div class="doc-badge badge-free">FREE</div></div>
+        <div class="doc-body">
+          <div class="doc-title">Giáo trình Xác suất thống kê — Bách Khoa HN</div>
+          <div class="doc-tags"><span class="doc-tag">PDF</span><span class="doc-tag">Toán</span></div>
+          <div class="doc-dl">↓ 3.400 lượt tải</div>
+          <div class="doc-meta"><span class="doc-price free">Miễn phí</span><span class="doc-rating">⭐ 4.5</span></div>
+        </div>
+      </div>
+      <div class="doc-card" onclick="openModal('buy')">
+        <div class="doc-thumb ppt">📋<div class="doc-badge badge-hot">HOT</div></div>
+        <div class="doc-body">
+          <div class="doc-title">Đề cương ôn thi Kế toán tài chính (có đáp án)</div>
+          <div class="doc-tags"><span class="doc-tag">PDF</span><span class="doc-tag">Kế toán</span></div>
+          <div class="doc-dl">↓ 1.780 lượt tải</div>
+          <div class="doc-meta"><span class="doc-price">12.000đ</span><span class="doc-rating">⭐ 4.7</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPLOAD CTA -->
+    <div class="section-title"><h3>💼 Kiếm tiền từ tài liệu của bạn</h3></div>
+    <div class="upload-box" onclick="openModal('register')">
+      <div class="upload-icon">⬆️</div>
+      <div class="upload-title">Đăng tài liệu & nhận tiền thưởng</div>
+      <div class="upload-sub">Chia sẻ giáo trình, đề thi, bài giảng của bạn<br/>và nhận tiền khi người khác tải về</div>
+      <div class="upload-actions">
+        <button class="btn-outline" onclick="event.stopPropagation();openModal('login')">Đăng nhập</button>
+        <button class="btn-primary" onclick="event.stopPropagation();openModal('register')">Đăng ký miễn phí</button>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="section-title"><h3>❓ Cách hoạt động</h3></div>
+    <div class="how-grid">
+      <div class="how-item">
+        <div class="how-icon">📝</div>
+        <div class="how-title">1. Đăng ký</div>
+        <div class="how-desc">Tạo tài khoản miễn phí trong 30 giây</div>
+      </div>
+      <div class="how-item">
+        <div class="how-icon">🔍</div>
+        <div class="how-title">2. Tìm & Mua</div>
+        <div class="how-desc">Tìm kiếm và tải tài liệu bạn cần</div>
+      </div>
+      <div class="how-item">
+        <div class="how-icon">💵</div>
+        <div class="how-title">3. Bán & Nhận tiền</div>
+        <div class="how-desc">Đăng bán và rút tiền về tài khoản</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align:center;padding:16px 0;border-top:1px solid var(--border);margin-top:8px">
+      <div style="font-family:'Sora',sans-serif;font-size:14px;font-weight:700;color:var(--brand);margin-bottom:6px">TàiLiệu<span style="color:var(--accent)">Học</span></div>
+      <div style="font-size:11px;color:var(--sub);line-height:1.8">
+        📧 contact@tailieuhoc.vn &nbsp;|&nbsp; 📞 1800 xxxx<br/>
+        © 2024 TàiLiệuHọc — Nền tảng học liệu Việt Nam
+      </div>
+    </div>
+
+  </div><!-- end .main -->
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button class="bn-item active" onclick="setBnActive(this)"><span class="bn-icon"><i class="ti ti-home"></i></span>Trang chủ</button>
+    <button class="bn-item" onclick="setBnActive(this)"><span class="bn-icon"><i class="ti ti-books"></i></span>Thư viện</button>
+    <button class="bn-item" onclick="openModal('register')"><span class="bn-icon"><i class="ti ti-circle-plus"></i></span>Đăng bán</button>
+    <button class="bn-item" onclick="setBnActive(this)"><span class="bn-icon"><i class="ti ti-bell"></i></span>Thông báo</button>
+    <button class="bn-item" onclick="openModal('login')"><span class="bn-icon"><i class="ti ti-user"></i></span>Tài khoản</button>
+  </div>
+
+</div><!-- end .wrap -->
+
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modalBox"></div>
+</div>
+
+<script>
+function openModal(type){
+  const overlay=document.getElementById('modalOverlay');
+  const box=document.getElementById('modalBox');
+  if(type==='register') box.innerHTML=registerHTML();
+  else if(type==='login') box.innerHTML=loginHTML();
+  else if(type==='buy') box.innerHTML=buyHTML();
+  overlay.classList.add('show');
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+function closeModalOutside(e){
+  if(e.target===document.getElementById('modalOverlay')) closeModal();
+}
+
+function registerHTML(){return `
+<div class="modal-header">
+  <div class="modal-title">🎓 Đăng ký miễn phí</div>
+  <button class="btn-close" onclick="closeModal()">×</button>
+</div>
+<div class="form-group">
+  <label class="form-label">Họ và tên</label>
+  <input class="form-input" type="text" placeholder="Nguyễn Văn A"/>
+</div>
+<div class="form-group">
+  <label class="form-label">Email</label>
+  <input class="form-input" type="email" placeholder="email@example.com"/>
+</div>
+<div class="form-group">
+  <label class="form-label">Trường / Tổ chức</label>
+  <input class="form-input" type="text" placeholder="VD: Đại học Bách Khoa Hà Nội"/>
+</div>
+<div class="form-group">
+  <label class="form-label">Mật khẩu</label>
+  <input class="form-input" type="password" placeholder="Ít nhất 6 ký tự"/>
+</div>
+<div class="form-group">
+  <label class="form-label">Xác nhận mật khẩu</label>
+  <input class="form-input" type="password" placeholder="Nhập lại mật khẩu"/>
+</div>
+<button class="btn-primary" style="width:100%;padding:12px;font-size:13px" onclick="showSuccess('register')">
+  ✅ Đăng ký ngay — Hoàn toàn miễn phí!
+</button>
+<div class="divider">hoặc đăng ký bằng</div>
+<button class="social-btn">🟦 Tiếp tục với Google</button>
+<button class="social-btn">📘 Tiếp tục với Facebook</button>
+<div class="toggle-link">Đã có tài khoản? <a onclick="openModal('login')">Đăng nhập</a></div>
+`;}
+
+function loginHTML(){return `
+<div class="modal-header">
+  <div class="modal-title">🔐 Đăng nhập</div>
+  <button class="btn-close" onclick="closeModal()">×</button>
+</div>
+<div class="form-group">
+  <label class="form-label">Email</label>
+  <input class="form-input" type="email" placeholder="email@example.com"/>
+</div>
+<div class="form-group">
+  <label class="form-label">Mật khẩu</label>
+  <input class="form-input" type="password" placeholder="Nhập mật khẩu"/>
+</div>
+<div style="text-align:right;margin-bottom:14px">
+  <a style="font-size:12px;color:var(--brand2);cursor:pointer">Quên mật khẩu?</a>
+</div>
+<button class="btn-primary" style="width:100%;padding:12px;font-size:13px" onclick="showSuccess('login')">
+  Đăng nhập
+</button>
+<div class="divider">hoặc</div>
+<button class="social-btn">🟦 Tiếp tục với Google</button>
+<button class="social-btn">📘 Tiếp tục với Facebook</button>
+<div class="toggle-link">Chưa có tài khoản? <a onclick="openModal('register')">Đăng ký miễn phí</a></div>
+`;}
+
+function buyHTML(){return `
+<div class="modal-header">
+  <div class="modal-title">🛒 Mua tài liệu</div>
+  <button class="btn-close" onclick="closeModal()">×</button>
+</div>
+<div style="background:#F0F4FA;border-radius:10px;padding:14px;margin-bottom:16px">
+  <div style="font-size:13px;font-weight:600;font-family:'Sora',sans-serif;margin-bottom:4px">Giáo trình Luật Dân sự — ĐH Luật HN</div>
+  <div style="font-size:12px;color:var(--sub)">PDF • 342 trang • Cập nhật 2024</div>
+  <div style="font-size:20px;font-weight:700;color:var(--brand);margin-top:8px;font-family:'Sora',sans-serif">15.000đ</div>
+</div>
+<div class="form-group">
+  <label class="form-label">Phương thức thanh toán</label>
+  <select class="form-input">
+    <option>💳 Momo</option>
+    <option>🏦 Chuyển khoản ngân hàng</option>
+    <option>💚 ZaloPay</option>
+    <option>💙 VNPay</option>
+    <option>💎 Điểm tích lũy (120 điểm)</option>
+  </select>
+</div>
+<button class="btn-primary" style="width:100%;padding:12px;font-size:13px" onclick="showSuccess('buy')">
+  💳 Thanh toán 15.000đ
+</button>
+<div style="text-align:center;margin-top:10px;font-size:11px;color:var(--sub)">
+  🔒 Thanh toán an toàn • Tải ngay sau khi thanh toán
+</div>
+`;}
+
+function showSuccess(type){
+  let title='', msg='';
+  if(type==='register'){title='Đăng ký thành công! 🎉';msg='Chào mừng bạn đến với TàiLiệuHọc.<br/>Tài khoản đã được tạo miễn phí!';}
+  else if(type==='login'){title='Đăng nhập thành công! 👋';msg='Chào mừng bạn quay lại.<br/>Khám phá hàng ngàn tài liệu học tập.';}
+  else if(type==='buy'){title='Thanh toán thành công! ✅';msg='Tài liệu đã sẵn sàng để tải về.<br/>Kiểm tra email để nhận link tải.';}
+  document.getElementById('modalBox').innerHTML=`
+  <div style="padding:10px 0">
+    <div class="success-box">
+      <div class="success-icon">${type==='buy'?'📥':'🎉'}</div>
+      <div class="success-title">${title}</div>
+      <div class="success-sub">${msg}</div>
+    </div>
+    <button class="btn-primary" style="width:100%;padding:12px;font-size:13px;margin-top:16px" onclick="closeModal()">
+      Bắt đầu khám phá →
+    </button>
+  </div>`;
+}
+
+function switchTab(el){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+}
+function setBnActive(el){
+  document.querySelectorAll('.bn-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+}
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',function(){
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
